@@ -18,6 +18,9 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 3000;
 
+  // Enable NestJS shutdown lifecycle hooks
+  app.enableShutdownHooks();
+
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 }

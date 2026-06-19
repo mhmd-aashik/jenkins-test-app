@@ -1,3 +1,6 @@
+process.env.DATABASE_URL =
+  process.env.DATABASE_URL || 'postgresql://postgres:postgrespassword@localhost:5435/tasks_test_db';
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
@@ -13,6 +16,7 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.enableShutdownHooks();
     await app.init();
   });
 

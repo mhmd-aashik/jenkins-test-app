@@ -4,19 +4,25 @@ import { Pool } from 'pg';
 import * as schema from './schema';
 
 export const DRIZZLE = 'DRIZZLE';
+export const DB_POOL = 'DB_POOL';
 
-export const databaseProvider = {
-  provide: DRIZZLE,
+export const dbPoolProvider = {
+  provide: DB_POOL,
   useFactory: (configService: ConfigService) => {
     const connectionString = configService.get<string>('DATABASE_URL');
-    
-    const pool = new Pool({
+    return new Pool({
       connectionString,
     });
-
-    // Return the Drizzle ORM instance wrapping the postgres pool
-    return drizzle(pool, { schema });
   },
   inject: [ConfigService],
 };
+
+export const databaseProvider = {
+  provide: DRIZZLE,
+  useFactory: (pool: Pool) => {
+    return drizzle(pool, { schema });
+  },
+  inject: [DB_POOL],
+};
+
 export type DrizzleDB = ReturnType<typeof drizzle<typeof schema>>;
