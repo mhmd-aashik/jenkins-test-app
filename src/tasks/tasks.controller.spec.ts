@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
-import { TaskStatus } from './dto/create-task.dto';
+import { TaskStatus, CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 
 describe('TasksController', () => {
   let controller: TasksController;
-  let service: TasksService;
 
   const mockTasksService = {
-    create: jest.fn().mockImplementation((dto) =>
+    create: jest.fn().mockImplementation((dto: CreateTaskDto) =>
       Promise.resolve({
         id: 1,
         title: dto.title,
@@ -19,16 +19,32 @@ describe('TasksController', () => {
       }),
     ),
     findAll: jest.fn().mockResolvedValue([
-      { id: 1, title: 'Test Task', description: 'Test Desc', status: TaskStatus.PENDING },
+      {
+        id: 1,
+        title: 'Test Task',
+        description: 'Test Desc',
+        status: TaskStatus.PENDING,
+      },
     ]),
-    findOne: jest.fn().mockImplementation((id) =>
-      Promise.resolve({ id, title: 'Test Task', description: 'Test Desc', status: TaskStatus.PENDING }),
+    findOne: jest.fn().mockImplementation((id: number) =>
+      Promise.resolve({
+        id,
+        title: 'Test Task',
+        description: 'Test Desc',
+        status: TaskStatus.PENDING,
+      }),
     ),
-    update: jest.fn().mockImplementation((id, dto) =>
-      Promise.resolve({ id, ...dto }),
-    ),
-    remove: jest.fn().mockImplementation((id) =>
-      Promise.resolve({ id, title: 'Test Task', status: TaskStatus.COMPLETED }),
+    update: jest
+      .fn()
+      .mockImplementation((id: number, dto: UpdateTaskDto) =>
+        Promise.resolve({ id, ...dto }),
+      ),
+    remove: jest.fn().mockImplementation((id: number) =>
+      Promise.resolve({
+        id,
+        title: 'Test Task',
+        status: TaskStatus.COMPLETED,
+      }),
     ),
   };
 
@@ -44,7 +60,6 @@ describe('TasksController', () => {
     }).compile();
 
     controller = module.get<TasksController>(TasksController);
-    service = module.get<TasksService>(TasksService);
   });
 
   it('should be defined', () => {
@@ -53,7 +68,11 @@ describe('TasksController', () => {
 
   describe('create', () => {
     it('should create a task', async () => {
-      const dto = { title: 'Test Task', description: 'Test Desc', status: TaskStatus.PENDING };
+      const dto = {
+        title: 'Test Task',
+        description: 'Test Desc',
+        status: TaskStatus.PENDING,
+      };
       const result = await controller.create(dto);
       expect(result).toHaveProperty('id', 1);
       expect(result.title).toBe(dto.title);

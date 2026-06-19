@@ -15,9 +15,15 @@ describe('TasksService', () => {
     updatedAt: new Date(),
   };
 
-  const mockReturning = jest.fn().mockImplementation(() => Promise.resolve([mockTask]));
-  const mockWhereSelect = jest.fn().mockImplementation(() => Promise.resolve([mockTask]));
-  const mockOrderBy = jest.fn().mockImplementation(() => Promise.resolve([mockTask]));
+  const mockReturning = jest
+    .fn()
+    .mockImplementation(() => Promise.resolve([mockTask]));
+  const mockWhereSelect = jest
+    .fn()
+    .mockImplementation(() => Promise.resolve([mockTask]));
+  const mockOrderBy = jest
+    .fn()
+    .mockImplementation(() => Promise.resolve([mockTask]));
 
   const mockDrizzle = {
     insert: jest.fn().mockReturnValue({
@@ -70,7 +76,11 @@ describe('TasksService', () => {
 
   describe('create', () => {
     it('should insert and return a new task', async () => {
-      const dto = { title: 'Test Task', description: 'Test Desc', status: TaskStatus.PENDING };
+      const dto = {
+        title: 'Test Task',
+        description: 'Test Desc',
+        status: TaskStatus.PENDING,
+      };
       const result = await service.create(dto);
       expect(result).toEqual(mockTask);
       expect(mockDrizzle.insert).toHaveBeenCalled();
@@ -94,14 +104,18 @@ describe('TasksService', () => {
 
     it('should throw NotFoundException if task does not exist', async () => {
       mockWhereSelect.mockImplementationOnce(() => Promise.resolve([]));
-      await expect(service.findOne(99)).rejects.toThrow('Task with ID 99 not found');
+      await expect(service.findOne(99)).rejects.toThrow(
+        'Task with ID 99 not found',
+      );
     });
   });
 
   describe('update', () => {
     it('should update a task and return it', async () => {
       const dto = { title: 'Updated Title' };
-      mockReturning.mockImplementationOnce(() => Promise.resolve([{ ...mockTask, title: 'Updated Title' }]));
+      mockReturning.mockImplementationOnce(() =>
+        Promise.resolve([{ ...mockTask, title: 'Updated Title' }]),
+      );
       const result = await service.update(1, dto);
       expect(result.title).toBe('Updated Title');
       expect(mockDrizzle.update).toHaveBeenCalled();
@@ -109,7 +123,9 @@ describe('TasksService', () => {
 
     it('should throw NotFoundException if task to update does not exist', async () => {
       mockReturning.mockImplementationOnce(() => Promise.resolve([]));
-      await expect(service.update(99, { title: 'No Exist' })).rejects.toThrow('Task with ID 99 not found');
+      await expect(service.update(99, { title: 'No Exist' })).rejects.toThrow(
+        'Task with ID 99 not found',
+      );
     });
   });
 
@@ -123,7 +139,9 @@ describe('TasksService', () => {
 
     it('should throw NotFoundException if task to delete does not exist', async () => {
       mockReturning.mockImplementationOnce(() => Promise.resolve([]));
-      await expect(service.remove(99)).rejects.toThrow('Task with ID 99 not found');
+      await expect(service.remove(99)).rejects.toThrow(
+        'Task with ID 99 not found',
+      );
     });
   });
 });

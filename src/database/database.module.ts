@@ -1,7 +1,12 @@
 import { Global, Inject, Module, OnApplicationShutdown } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Pool } from 'pg';
-import { databaseProvider, dbPoolProvider, DB_POOL, DRIZZLE } from './database.provider';
+import {
+  databaseProvider,
+  dbPoolProvider,
+  DB_POOL,
+  DRIZZLE,
+} from './database.provider';
 
 @Global()
 @Module({

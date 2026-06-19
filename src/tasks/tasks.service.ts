@@ -30,11 +30,8 @@ export class TasksService {
   }
 
   async findOne(id: number) {
-    const [task] = await this.db
-      .select()
-      .from(tasks)
-      .where(eq(tasks.id, id));
-    
+    const [task] = await this.db.select().from(tasks).where(eq(tasks.id, id));
+
     if (!task) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
