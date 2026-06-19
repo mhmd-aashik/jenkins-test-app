@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres-test-db:
+    image: postgres:16-alpine
+    container_name: nest_postgres_test
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: tasks_test_db
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tasks_test_db"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
