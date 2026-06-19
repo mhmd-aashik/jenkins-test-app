@@ -30,5 +30,5 @@ COPY --from=builder /usr/src/app/drizzle ./drizzle
 
 EXPOSE 3000
 
-# Start command
-CMD ["node", "dist/main.js"]
+# Start command: run migrations first, then start the web server
+CMD ["sh", "-c", "npm run db:migrate:prod && node dist/main.js"]

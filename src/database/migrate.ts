@@ -5,11 +5,13 @@ import { Pool } from 'pg';
 async function runMigrations() {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    throw new Error('DATABASE_URL environment variable is required to run migrations.');
+    throw new Error(
+      'DATABASE_URL environment variable is required to run migrations.',
+    );
   }
 
   console.log('Running production Drizzle migrations...');
-  
+
   // Create a temporary database pool to apply migrations
   const pool = new Pool({
     connectionString,
@@ -23,7 +25,7 @@ async function runMigrations() {
 
   // Close the temporary pool connection
   await pool.end();
-  
+
   console.log('Migrations applied successfully!');
 }
 
