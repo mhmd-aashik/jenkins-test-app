@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres-db:
     image: postgres:16-alpine
@@ -9,11 +7,11 @@ services:
       POSTGRES_PASSWORD: postgrespassword
       POSTGRES_DB: tasks_dev_db
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - pgdata_dev:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d tasks_dev_db"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d tasks_dev_db']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -24,7 +22,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: nest_app_dev
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       NODE_ENV: development
       PORT: 3000
